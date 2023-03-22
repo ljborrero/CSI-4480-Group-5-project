@@ -1,5 +1,5 @@
 import math
-import array
+import numpy as np
 # ST = num characters in plaintext file
 # EI size = width x length x # channels
 
@@ -15,9 +15,7 @@ with open("example.txt") as file:
     print(STsize)
 # image type = CYMK mode
 
-A = array.array('i', [0,44,32,43,12,56,21,5,21,34,23,23,54,32,99,12,34,65,23,45,76]) # initializes array
-for i in A:
-    print(i)
+A = np.full((1,1), 300)
 #for x in range(5):
     #A.append([[]])
 #print(A)
