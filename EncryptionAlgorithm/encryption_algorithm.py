@@ -15,7 +15,7 @@ with open("example.txt") as file:
     print(STsize)
 # image type = CYMK mode
 
-A = np.full((1,1), 300)
+A = np.full((STsize,STsize), )
 #for x in range(5):
     #A.append([[]])
 #print(A)
