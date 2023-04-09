@@ -3,6 +3,8 @@ import numpy as np
 # ST = num characters in plaintext file
 # EI size = width x length x # channels
 
+numSquares = 4
+
 # choose file & read it in (check to make sure it's the right type?)
 with open("example.txt") as file:
     contents = file.read().lower()
@@ -11,11 +13,15 @@ with open("example.txt") as file:
 # size = Ceil(sqr(ST/4))
     ST = len(contents)
     print(ST)
-    STsize = math.ceil(math.sqrt(ST/4))
+    STsize = math.ceil(math.sqrt(ST/numSquares))
     print(STsize)
 # image type = CYMK mode
 
-A = np.full((STsize,STsize), )
+#colorsArray = np.full((STsize,STsize), )
+#source array = (#images, #channels, x_dim, y_dim) #channels = 4 = RGBA/CYMK
+# fills the array with just the color white
+
+#no clue where I got this code from
 #for x in range(5):
     #A.append([[]])
 #print(A)
@@ -30,39 +36,56 @@ A = np.full((STsize,STsize), )
     #It is also possible to encrypt a text consisting of letters in various languages. 
     #In this work, four keys were used; each key was 37 characters long.
 
-# if z = 1
-        # key 1 is used
-        # increase x until x = size
-        # increase y until y = size
-        # increase z  
-    # if z = 2
-        # key 2 is used
-        # increase x until x = size
-        # increse y until y = size
-        # increase z
-    # if z = 3
-        # key 3 is used
-        # increase x until x = size
-        # increase y until y = size
-        # increase z
-    # if z = 4
-        # key 4 is used
-        # increase x until x = size
-        # increase y until y = size
-        # break
-    # else
-    
 
-    #after the break:
-        # if ST length != EI size
-            # set threshold color
+
+red = np.full((STsize,STsize), 0)
+green = np.full((STsize,STsize), 0)
+blue = np.full((STsize, STsize),0)
+transparency = np.full((STsize, STsize),0)
+
+STsquare = STsize * STsize
+
+
+#https://www.geeksforgeeks.org/python-convert-string-list-to-ascii-values/ --> convert chars to their ascii equivalents
+
+outOfChars = False
+for z in range(numSquares): # z = 0 to 3
+    for r in range(STsize): # r = 0 to STsize - 1
+        for c in range(STsize): # c = 0 to STsize - 1
+            currentIndex = (z * STsize ** z) + (r * STsize) + c # number ** exponent = n^e
+            if currentIndex >= ST: outOfChars = True# if you've run out of characters in the input, just quit the loop since you can't access anything
+            if z == 0 and  not outOfChars: # z = 0, working with cyan
+                red[r][c] = ord(contents[currentIndex])
+            elif z == 1 and not outOfChars:
+                green[r][c] = ord(contents[currentIndex])
+            elif z == 2 and not outOfChars:
+                blue[r][c] = ord(contents[currentIndex])
+            elif z == 3 and not outOfChars :
+                transparency[r][c] = ord(contents[currentIndex])
+            elif not outOfChars:
+                print("Sorry, I expected more color layers than there were.") # ie z >= number of color layers (4 for cymk)
+
+
+
+
+rgba_values = [[]*STsize]*STsize # creates a STsize x STsize array
+i = 0
+for j in range(STsize):
+    for k in range (STsize):
+        if i < len(rgba_values):
+            rgba_values[j][k] = [red[i], green[i], blue[i], transparency[i]] # list assignment index out of range error here
+            print("row: " + j + "column: " + k + "rgba: " + rgba_values[j][k] + "i: " + i)
+            i = i + 1
+
+
         #print & save image
                 #how to create a cymk image: https://stackoverflow.com/questions/43817854/how-to-create-a-cmyk-image-in-python
                 #from PIL import Image
                 #im = Image.fromarray(A, mode="CMYK")
                 #im.save("your_file.jpeg")
-                
+
+colorsArray = np.array(colorsList)               
 file.close()
 from PIL import Image
-im = Image.fromarray(A, mode="CMYK")
+im = Image.fromarray(rgba_values, mode="RGBA")
 im.save("encryptedImage.jpeg")
