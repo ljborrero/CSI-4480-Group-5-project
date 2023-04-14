@@ -7,25 +7,19 @@ numSquares = 4
 
 # choose file & read it in (check to make sure it's the right type?)
 with open("example.txt") as file:
-    contents = file.read().lower()
-    print(contents)
+    contents = file.read()#.lower()
+    #print(contents)
+    file.close()
 # change to all lowercase? .lower()^
 # size = Ceil(sqr(ST/4))
     ST = len(contents)
-    print(ST)
+    #print(ST)
     STsize = math.ceil(math.sqrt(ST/numSquares))
-    print(STsize)
-# image type = CYMK mode
+    #print(STsize)
 
-#colorsArray = np.full((STsize,STsize), )
 #source array = (#images, #channels, x_dim, y_dim) #channels = 4 = RGBA/CYMK
-# fills the array with just the color white
 
-#no clue where I got this code from
-#for x in range(5):
-    #A.append([[]])
-#print(A)
-
+#from the research paper:"
 # By default, four keys were used in this paper, each layer has its own key, 
     #and as previously mentioned, it is possible to use several keys according to the programmer's desire.
     #Each letter takes a color, in CMYK this is a 32 bit number of four possible colors with 256 levels each.
@@ -35,13 +29,15 @@ with open("example.txt") as file:
     #English, Arabic, Hindi or any other language. This is one of the advantages of this work.
     #It is also possible to encrypt a text consisting of letters in various languages. 
     #In this work, four keys were used; each key was 37 characters long.
+#"
 
+#I chose not to implement the key part (which is what actually makes the encryption unique and therefore secure)
 
 
 red = np.full((STsize,STsize), 0)
 green = np.full((STsize,STsize), 0)
 blue = np.full((STsize, STsize),0)
-transparency = np.full((STsize, STsize),0)
+transparency = np.full((STsize, STsize),255)
 
 STsquare = STsize * STsize
 
@@ -67,25 +63,25 @@ for z in range(numSquares): # z = 0 to 3
 
 
 
-
-rgba_values = [[]*STsize]*STsize # creates a STsize x STsize array
-i = 0
+rgba_values = []#creates a new array
+#adds each red, greeen, blue, transparency value to each pixel in the new array
 for j in range(STsize):
-    for k in range (STsize):
-        if i < len(rgba_values):
-            rgba_values[j][k] = [red[i], green[i], blue[i], transparency[i]] # list assignment index out of range error here
-            print("row: " + j + "column: " + k + "rgba: " + rgba_values[j][k] + "i: " + i)
-            i = i + 1
+    for k in range(STsize):
+        rgba_values.append((red[j][k], green[j][k], blue[j][k], transparency[j][k]))
+        #print("row: " + str(j) + " column: " + str(k) + " rgba: " + str(rgba_values[j][k]))
 
 
-        #print & save image
-                #how to create a cymk image: https://stackoverflow.com/questions/43817854/how-to-create-a-cmyk-image-in-python
-                #from PIL import Image
-                #im = Image.fromarray(A, mode="CMYK")
-                #im.save("your_file.jpeg")
 
-colorsArray = np.array(colorsList)               
-file.close()
+#worked when using Image.fromArray, but values didn't carry over correctly due to how PIL and NumPy have different dtypes
+#colorsArray = np.array(rgba_values)               
+#from PIL import Image
+#im = Image.fromarray(colorsArray, mode="RGBA") 
+#im.save("encryptedImage.png")
+
 from PIL import Image
-im = Image.fromarray(rgba_values, mode="RGBA")
-im.save("encryptedImage.jpeg")
+img = Image.new("RGBA", (STsize, STsize), color=0)#creates a new image with RGBA format, since PIL plays nicer with RBGA than with CYMK
+img.putdata(rgba_values) #assigns each pixel color
+img.save("encryptedImage.png") #saves the image
+
+print("File successfully converted to image!")
+#other sources used in this code = the pillow documentation at pillow.readthedocs.io/en/stable
