@@ -2,7 +2,7 @@
 
 This is my modified implementation of the text-to-image encryption algorithm proposed in https://www.mdpi.com/2073-431X/11/3/39.
 
-It uses pillow v9.4.0.
+It uses numpy v1.24.2 and pillow v9.4.0.
 
 Sources used in writing this:
 
