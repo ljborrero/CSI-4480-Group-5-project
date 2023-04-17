@@ -20,16 +20,20 @@ Additionally, I believe I used a more brute-force method to assign character asc
 
 I also needed to use PNG because .jpeg suppports CMYK but not RGBA, whereas .png supports RGBA and not CMYK.
 
-Essentially, the algorithm takes in the text file "example.txt", converts each character to its ascii value, and assigns it to a pixel in one of the 4 RGBA layers of a newly created image. It then saves the image as "encryptedImage.png". 
+Essentially, the algorithm asks the user to select a text file. If they don't, it defaults to the text file "example.txt".
+
+It converts each character to its ascii value, and assigns it to a pixel in one of the 4 RGBA layers of a newly created image. It then saves the image as "encryptedImage.png". 
 
 If you wish to see the image you will really need to zoom in as the image files are very small unless you use a huge text file.
 
 That's why the image shown is so blurry -- it's an extremely blown up image that only consists of a few pixels.
 
-When the decryption algorithm is called, it reads in each band one after each other and converts each pixel value to the ascii assigned with each integer. 
+When the decryption algorithm is called, it asks where to save the decrypted output to. If no file is chosen, the default file is "decryptedText.txt"
+
+Then it reads in the image file's bands one after each other and converts each pixel value to the ascii assigned with each integer. 
 
 If the integer is 3 (ASCII End of Text code), it does not write it to the new file. 
 
-It then saves the new file as "decryptedText.txt"".
+Finally, it saves the file.
 
 ## RSA Encryption
