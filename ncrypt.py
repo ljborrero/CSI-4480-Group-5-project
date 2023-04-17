@@ -2,6 +2,7 @@ import tkinter as tk #for gui
 from tkinter import * #for gui
 from tkinter import messagebox #for messagebox
 from tkinter.filedialog import askopenfile
+from tkinter import filedialog as fd # for image encryption
 import string #for password
 import random #for password
 import rsa #for encryption
@@ -119,8 +120,17 @@ def fileE():
     with open('decrypted.txt', 'w') as f:
         f.write(content)
         
-    
+def uploadFile():
+    fileName = fd.askopenfilename(title='Open an unencrypted text file:', initialdir='/', filetypes=[('text files', '*.txt')])
 
+        #https://www.pythontutorial.net/tkinter/tkinter-open-file-dialog/
+    if fileName is not None and fileName != '': #if the user selects a file to read in
+        with open(fileName) as inputfile: #open the file
+            txtfile = open("unencryptedText.txt", "w") #open the unencryptedText.txt input file
+            txtfile.write(inputfile.read()) #write the contents of that file to the input file
+            txtfile.close() # close the input file
+            inputfile.close()#close the user-selected file
+    
 def encryptImage():
     key = '1234'
     if ok.get() == key:
@@ -130,7 +140,9 @@ def encryptImage():
         numSquares = 4# in case you want to change the format and thus need to change the number of channels in the image
                 
         # choose file & read it in (check to make sure it's the right type?)
-        with open("example.txt") as file:
+        uploadFile() # see if the user wants to upload their own file
+        
+        with open("unencryptedText.txt") as file:
             contents = file.read()
                     #print(contents)
             file.close()
@@ -212,7 +224,9 @@ def decryptImage():
         enIm.close()
         
         #create a new textfile and put the decrypted text in it
-        txtfile = open("decryptedText.txt", "w") 
+        txtfile = fd.asksaveasfile(defaultextension=".txt") # ask the user where to save the output file
+        if txtfile is None: # if they don't choose, output it to the local file "decryptedText.txt"
+            txtfile = open("decryptedText.txt", "w")
         #create or overwrite the decryptedText.txt file 
         #-> https://www.w3schools.com/python/python_file_write.asp
         for r in red:
@@ -253,6 +267,7 @@ def imageE():
     button0.pack()
     button9 = tk.Button(imP, text = 'Decrypt', command = decryptImage)
     button9.pack()
+
 
 
 
