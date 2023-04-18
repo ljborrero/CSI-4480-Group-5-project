@@ -4,8 +4,6 @@
 
 ## Create a Password
 
-## Encryption
-
 ## Image Encryption
 
 For the demo, this takes in the key 1234 to encrypt text into an image, and the key 678 to decrypt the image back into a text file.
