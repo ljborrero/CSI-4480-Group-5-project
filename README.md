@@ -2,11 +2,16 @@
 
 ## Main GUI
 
+Created using Python module called TKinter. Allows us to use buttons, widgets, and a menu bar to navigate through the GUI and call functions. 
+On the main screen, the top left is the "Options" dropdown which has the different things you can do with the GUI. "Generate Password" pulls up a new page for the random password generator. It only generates a random password if the text input is 12 or higher in terms of length of the password. "Image Encryption" pulls up the page for converting text file into an image. Only with the proper keys will the text file be converted to image during encryption and then converted back to original text during decryption. "RSA Encryption" is an implementation of RSA in Python. Hitting the exit button on the top right of the main page will kill the program, but on any other window it will just close the window.
+
 ## Create a Password
+
+Random password will be at least 12 characters long. It will include uppercase letters, lowercase letters, digits, and symbols.
 
 ## Image Encryption
 
-For the demo, this takes in the key 1234 to encrypt text into an image, and the key 678 to decrypt the image back into a text file.
+For the demo, this takes in the key 1234 to encrypt text into an image, and the key to decrypt the image back into a text file needs to match the generated password.
 
 Then it is an implementation of the text-to-image encryption algorithm described here: https://www.mdpi.com/2073-431X/11/3/39. 
 
@@ -35,3 +40,7 @@ If the integer is 3 (ASCII End of Text code), it does not write it to the new fi
 Finally, it saves the file.
 
 ## RSA Encryption
+
+Installed rsa in Python and used the module to implement the algorithm. The RSA module has newkeys() method which generates a public key and a private key used for 
+encryption and decryption respectively. The input from the entry box is taken and encrypted using RSA's encrypt method in Pyhton. This method gets passed the encoded 
+text and the public key. For decryption, the decrypt method gets passed the encrypted text and the private key, then decodes the result back to the original text. 
